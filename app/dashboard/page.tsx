@@ -15,10 +15,10 @@ const CHIP = {
 };
 
 const BTN =
-  'inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#0B6B4B] px-[18px] py-2.5 text-sm font-semibold text-white hover:bg-[#095C40] cursor-pointer';
+  'inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#0B6B4B] px-[18px] py-2.5 text-sm font-semibold text-white hover:bg-[#095C40]  cursor-pointer';
 const BTN2 =
   'inline-flex min-h-[44px] items-center justify-center rounded-lg border border-[#667085] bg-white px-[18px] py-2.5 text-sm font-semibold text-[#101828] hover:bg-[#F2F4F7] cursor-pointer';
-const NAV = 'block rounded-lg px-3.5 py-3 text-sm font-medium text-[#344054] hover:bg-[#F2F4F7]';
+const NAV = 'block rounded-lg px-3.5 py-3 text-sm font-medium text-[#344054] hover:bg-[#F2F4F7] cursor-pointer';
 const ROW = 'grid grid-cols-[2.4fr_1.2fr_1.8fr_1fr] items-center gap-4 px-5 py-3.5 text-sm';
 
 function Chip({ tone, children }: { tone: keyof typeof CHIP; children: React.ReactNode }) {
@@ -48,7 +48,7 @@ export default function DashboardPage() {
           >
             New audit
           </Link>
-          <Link href="#audits" className={NAV}>
+          <Link href="/audit" className={NAV}>
             My audits
           </Link>
           <Link href="#" className={NAV}>
@@ -117,9 +117,9 @@ export default function DashboardPage() {
 
                     <div role="cell">
                       {a.status === 'done' && (
-                        <button type="button" className={BTN2}>
+                        <Link href="/audit" className={BTN2}>
                           Open
-                        </button>
+                        </Link>
                       )}
                       {a.status === 'failed' && (
                         <button type="button" className={BTN2}>
