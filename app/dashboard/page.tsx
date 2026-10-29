@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ChoosePdfButton } from '../pdfAccess';
 
 // Dummy data, same as the canvas drawing.
 const AUDITS = [
@@ -14,8 +15,6 @@ const CHIP = {
   grey: 'bg-[#EAECF0] text-[#344054]',
 };
 
-const BTN =
-  'inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#0B6B4B] px-[18px] py-2.5 text-sm font-semibold text-white hover:bg-[#095C40]  cursor-pointer';
 const BTN2 =
   'inline-flex min-h-[44px] items-center justify-center rounded-lg border border-[#667085] bg-white px-[18px] py-2.5 text-sm font-semibold text-[#101828] hover:bg-[#F2F4F7] cursor-pointer';
 const NAV = 'block rounded-lg px-3.5 py-3 text-sm font-medium text-[#344054] hover:bg-[#F2F4F7] cursor-pointer';
@@ -64,9 +63,7 @@ export default function DashboardPage() {
           <div className="flex flex-col items-center gap-3 rounded-xl border-2 border-dashed border-[#667085] bg-white p-11 text-center">
             <div className="text-lg font-semibold">Drop the tender PDF here</div>
             <div className="text-sm text-[#475467]">PDF only, up to 20 MB. Your audit is ready in a few minutes.</div>
-            <button type="button" className={BTN}>
-              Choose PDF
-            </button>
+            <ChoosePdfButton />
           </div>
 
           <section id="audits" aria-labelledby="audits-heading" className="rounded-xl border border-[#E4E7EC] bg-white">
