@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { AuthShell, INPUT, PRIMARY_BTN } from '../authShell';
-
+import { passwordProblem, register } from '../Api/authApi';
+import { errorMessage } from '../Api/aiTenderApi';
 
 const LABEL = 'block text-sm font-semibold';
 const HINT = 'mt-1 text-[13px] text-[#475467]';
@@ -12,23 +13,46 @@ const HINT = 'mt-1 text-[13px] text-[#475467]';
 export default function RegisterPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  // Design only: no sign-up yet, so a valid form just opens the dashboard.
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const password = String(new FormData(e.currentTarget).get('password') || '');
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters.');
+    if (submitting) return;
+
+    // Read the form before any await (the event is gone afterwards).
+    const form = new FormData(e.currentTarget);
+    const full_name = String(form.get('full_name') || '').trim();
+    const company_name = String(form.get('company_name') || '').trim();
+    const email = String(form.get('email') || '').trim();
+    const phone = String(form.get('phone') || '').trim();
+    const password = String(form.get('password') || '');
+
+    if (!full_name || !email) {
+      setError('Please enter your full name and email.');
       return;
     }
+    const problem = passwordProblem(password);
+    if (problem) {
+      setError(problem);
+      return;
+    }
+
     setError(null);
-    router.push('/dashboard');
+    setSubmitting(true);
+    try {
+      await register({ full_name, company_name, email, phone, password });
+      router.replace('/dashboard'); // stay in the "creating" state while the page changes
+    } catch (err) {
+      setError(errorMessage(err));
+      setSubmitting(false);
+    }
   }
 
   return (
     <AuthShell>
       <form
         onSubmit={onSubmit}
+        aria-busy={submitting}
         className="flex w-full max-w-[400px] flex-col gap-4 rounded-xl border border-[#E4E7EC] bg-white p-8"
       >
         <h2 className="m-0 text-2xl font-bold">Create your account</h2>
@@ -104,8 +128,8 @@ export default function RegisterPage() {
           </p>
         )}
 
-        <button type="submit" className={PRIMARY_BTN}>
-          Create account
+        <button type="submit" disabled={submitting} className={`${PRIMARY_BTN} disabled:cursor-not-allowed disabled:opacity-60`}>
+          {submitting ? 'Creating account…' : 'Create account'}
         </button>
 
         <p className="m-0 text-sm text-[#475467]">

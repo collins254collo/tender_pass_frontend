@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ChoosePdfButton } from '../pdfAccess';
+import { LogoutButton } from '../logoutButton';
 
 // Dummy data, same as the canvas drawing.
 const AUDITS = [
@@ -16,8 +17,8 @@ const CHIP = {
 };
 
 const BTN2 =
-  'inline-flex min-h-[44px] items-center justify-center rounded-lg border border-[#667085] bg-white px-[18px] py-2.5 text-sm font-semibold text-[#101828] hover:bg-[#F2F4F7] cursor-pointer';
-const NAV = 'block rounded-lg px-3.5 py-3 text-sm font-medium text-[#344054] hover:bg-[#F2F4F7] cursor-pointer';
+  'inline-flex min-h-[44px] items-center justify-center rounded-lg border border-[#667085] bg-white px-[18px] py-2.5 text-sm font-semibold text-[#101828] hover:bg-[#F2F4F7]';
+const NAV = 'block rounded-lg px-3.5 py-3 text-sm font-medium text-[#344054] hover:bg-[#F2F4F7]';
 const ROW = 'grid grid-cols-[2.4fr_1.2fr_1.8fr_1fr] items-center gap-4 px-5 py-3.5 text-sm';
 
 function Chip({ tone, children }: { tone: keyof typeof CHIP; children: React.ReactNode }) {
@@ -32,28 +33,32 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-[#F6F6F2] text-[#101828] md:flex">
       {/* Phone: top bar */}
-      <header className="border-b border-[#E4E7EC] bg-white px-4 py-3 md:hidden">
+      <header className="flex items-center justify-between border-b border-[#E4E7EC] bg-white px-4 py-3 md:hidden">
         <span className="text-xl font-bold text-[#0B6B4B]">Tenderpass</span>
+        <LogoutButton />
       </header>
 
       {/* Sidebar */}
-      <aside className="hidden w-[232px] shrink-0 border-r border-[#E4E7EC] bg-white px-4 py-6 md:block">
-        <div className="px-3.5 pb-6 text-xl font-bold text-[#0B6B4B]">Tenderpass</div>
-        <nav aria-label="Main">
-          <Link
-            href="/dashboard"
-            aria-current="page"
-            className="block rounded-lg bg-[#E6F4EE] px-3.5 py-3 text-sm font-medium text-[#0B6B4B]"
-          >
-            New audit
-          </Link>
-          <Link href="/audit" className={NAV}>
-            My audits
-          </Link>
-          <Link href="#" className={NAV}>
-            Account
-          </Link>
-        </nav>
+      <aside className="hidden w-[232px] shrink-0 border-r border-[#E4E7EC] bg-white px-4 py-6 md:flex md:flex-col md:justify-between">
+        <div>
+          <div className="px-3.5 pb-6 text-xl font-bold text-[#0B6B4B]">Tenderpass</div>
+          <nav aria-label="Main">
+            <Link
+              href="/dashboard"
+              aria-current="page"
+              className="block rounded-lg bg-[#E6F4EE] px-3.5 py-3 text-sm font-medium text-[#0B6B4B]"
+            >
+              New audit
+            </Link>
+            <Link href="/audit" className={NAV}>
+              My audits
+            </Link>
+            <Link href="#" className={NAV}>
+              Account
+            </Link>
+          </nav>
+        </div>
+        <LogoutButton className="w-full" />
       </aside>
 
       <main className="min-w-0 flex-1 p-6 md:p-10">
